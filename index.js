@@ -19,7 +19,6 @@ app.get('/user/:username', (req, res) => {
     username: req.params.username,
     hobbies: ['footbal', 'skate', 'basketball'],
   };
-
   res.render('user', data);
 });
 
