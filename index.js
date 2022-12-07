@@ -1,21 +1,28 @@
-const http = require('http');
-const fs = require('fs');
+const express = require('express');
 
-const server = http.createServer((request, response) => {
-  response.writeHead(200, { 'Content-Type': 'text/html; charset=utf8' });
+const app = express();
 
-  if (request.url === '/') {
-    fs.createReadStream('./templates/index.html').pipe(response);
-  } else if (request.url === '/about') {
-    fs.createReadStream('./templates/about.html').pipe(response);
-  } else {
-    fs.createReadStream('./templates/error.html').pipe(response);
-  }
+app.set('view engine', 'ejs');
+
+app.get('/', (req, res) => {
+  res.render('index');
+});
+
+app.get('/about', (req, res) => {
+  res.render('about');
+});
+
+app.get('/user/:username', (req, res) => {
+  const data = {
+    username: req.params.username,
+    hobbies: ['footbal', 'skate', 'basketball'],
+  };
+
+  res.render('user', data);
 });
 
 const PORT = 3000;
-const HOST = 'localhost';
 
-server.listen(PORT, HOST, () => {
-  console.log(`Сервер запущен: http://${HOST}:${PORT}`);
+app.listen(PORT, () => {
+  console.log(`server started: http://localhost:${PORT}`);
 });
